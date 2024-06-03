@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Top50 {
     String pais;
     LocalDate fecha;
-    MyHeap<Cancion,Integer> top;
+    MyHeap<Cancion,Integer> top; //No tendria q ser daily rank en vez de cancion?
 
     public Top50(String pais, LocalDate fecha) {
         this.pais = pais;
@@ -38,5 +38,9 @@ public class Top50 {
 
     public void setTop(MyHeap<Cancion, Integer> top) {
         this.top = top;
+    }//Para que se usa este metodo?
+
+    public Object MakeTop(Integer length_top){ // Q calcule el top aca mismo, del tamaño q le pasen
+        return null;
     }
 }

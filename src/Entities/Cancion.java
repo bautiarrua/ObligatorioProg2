@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Cancion {
 
-    String spotifyId;//0
-    String name;//1
-    List<String> artist;//2
-    Float tempo;//23
+    private String spotifyId;//0
+    private String name;//1
+    private List<Artista> artist;//2 No hay q usar nustra lsita??
+    private Float tempo;//23
 
 //    int dailyRank;//3
 //    int dailyMovements;//4
