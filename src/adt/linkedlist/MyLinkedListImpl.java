@@ -2,7 +2,7 @@ package adt.linkedlist;
 
 import adt.queue.EmptyQueueException;
 import adt.queue.MyQueue;
-import adt.stack.EmptyStackException;
+import adt.Exceptions.EmptyStackException;
 import adt.stack.MyStack;
 
 public class MyLinkedListImpl<T> implements MyList<T>, MyQueue<T>, MyStack<T>{

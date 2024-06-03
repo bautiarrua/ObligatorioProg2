@@ -1,2 +1,4 @@
-package adt.Exceptions;public class NoSuchElementException {
+package adt.Exceptions;
+
+public class NoSuchElementException extends Exception{
 }

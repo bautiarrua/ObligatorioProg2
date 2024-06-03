@@ -1,6 +1,8 @@
 package adt.stack;
 
 
+import adt.Exceptions.EmptyStackException;
+
 public interface MyStack<T> {
 
 	void push(T value);
