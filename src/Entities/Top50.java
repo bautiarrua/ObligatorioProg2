@@ -43,4 +43,13 @@ public class Top50 {
     public Object MakeTop(Integer length_top){ // Q calcule el top aca mismo, del tamaño q le pasen
         return null;
     }
+
+    public boolean equals(Object obj){
+        Top50 tempP = (Top50) obj;
+        if(this.getPais().equals(tempP.getPais()) && this.getFecha().equals(tempP.getFecha())){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

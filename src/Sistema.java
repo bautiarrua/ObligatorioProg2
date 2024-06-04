@@ -1,17 +1,18 @@
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 
 import Entities.Top50;
-import adt.*;
 import adt.arbolbinario.Arbolbinario;
+import adt.arbolbinario.MyArbolbinario;
 import adt.hashcerrado.MyHashCerrado;
+import adt.hashcerrado.MyHashCerradoI;
 
-import java.time.LocalDate;
 
 
 public class Sistema {
 
-    //private Arbolbinario<LocalDate, MyHashCerrado> arbolFecha = new Arbolbinario<>();
-    //private MyHashCerrado<String, Top50> hashPais = new MyHashCerrado<>();
+    private MyArbolbinario<ChronoLocalDate,String> arbolfechas = new Arbolbinario<>();
+    private MyHashCerradoI<String, Top50> hashPais = new MyHashCerrado<>();
 
     public Object Top_10_canciones (String Pais, LocalDate fecha){
         return null;
