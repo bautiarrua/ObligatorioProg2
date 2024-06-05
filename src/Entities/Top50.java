@@ -4,13 +4,14 @@ import adt.Heap.MyHeap;
 import adt.Heap.MyHeapIMPL;
 
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 
 public class Top50 {
     String pais;
-    LocalDate fecha;
+    ChronoLocalDate fecha;
     MyHeap<Cancion,Integer> top; //No tendria q ser daily rank en vez de cancion?
 
-    public Top50(String pais, LocalDate fecha) {
+    public Top50(String pais, ChronoLocalDate fecha) {
         this.pais = pais;
         this.fecha = fecha;
         top = new MyHeapIMPL<>();
@@ -24,11 +25,11 @@ public class Top50 {
         this.pais = pais;
     }
 
-    public LocalDate getFecha() {
+    public ChronoLocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(ChronoLocalDate fecha) {
         this.fecha = fecha;
     }
 
