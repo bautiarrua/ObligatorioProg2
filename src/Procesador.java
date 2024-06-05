@@ -20,27 +20,26 @@ public class Procesador {
     public static void main(String[] args) {
 
 //        MyHashCerrado<String, Top50> paises = new MyHashCerrado<>();
-        MyArbolbinario<ChronoLocalDate,MyHashCerradoI<String,Top50>> arbolFechas = new Arbolbinario<>();
+        MyArbolbinario<ChronoLocalDate, MyHashCerradoI<String, Top50>> arbolFechas = new Arbolbinario<>();
         Cancion c;
-        Top50 toptemp = new Top50(null,null);
-        int size =100;
+        Top50 toptemp = new Top50(null, null);
+        int size =53;
         int ca = 2;
+        int l =0;
         String fileName = "C:\\Users\\jarruabarrena\\OneDrive - Universidad de Montevideo\\Prog2\\Obligatorio\\universal_top_spotify_songs.csv";
-        try(BufferedReader br = new BufferedReader(new FileReader(fileName))){
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String linea = br.readLine();
 //            while ((linea = br.readLine()) != null){
-            for (int i = 0; i<size; i++){
+            for (int i = 0; i < size; i++) {
                 System.out.println(ca);
                 linea = br.readLine();
-                if(linea!=null) {
+                if (linea != null) {
                     ca++;
                     String[] datos = linea.split(",\"");
                     String ar = datos[2];
                     String[] artistas = ar.split(",");
                     String pais = datos[6].replaceAll("\"", "");
                     ChronoLocalDate fecha = LocalDate.parse(datos[7].replaceAll("\"", ""));
-                    System.out.println(fecha);
-                    System.out.println(pais);
                     int dr = Integer.parseInt(datos[3].replaceAll("\"", ""));
                     c = new Cancion(datos[0].replaceAll("\"", ""),
                             datos[1].replaceAll("\"", ""),
@@ -48,51 +47,64 @@ public class Procesador {
                     for (int a = 0; a < artistas.length; a++) {
                         c.getArtist().add(artistas[a].replaceAll("[\"; ]", ""));
                     }
-                    if(!arbolFechas.contains(fecha)){
-                        MyHashCerradoI<String,Top50> paises = new MyHashCerrado<>();
-                        arbolFechas.add(fecha,paises);
+                    if (!arbolFechas.contains(fecha)) {
+                        MyHashCerradoI<String, Top50> paises = new MyHashCerrado<>();
+                        arbolFechas.add(fecha, paises);
                     }
-                    if(arbolFechas.contains(fecha)){
-                        if(!arbolFechas.find(fecha).contains(pais)){
+                    if (arbolFechas.contains(fecha)) {
+                        if (!arbolFechas.find(fecha).Keys().contains(pais)) {
+                            MyHeap<Cancion, Integer> top = new MyHeapIMPL<>();
                             toptemp.setPais(pais);
                             toptemp.setFecha(fecha);
-                            MyHeap<Cancion,Integer> top = new MyHeapIMPL<>();
                             toptemp.setTop(top);
-                            toptemp.getTop().insert(c,dr);
+                            toptemp.getTop().insert(c, dr);
                             try {
-                                arbolFechas.find(fecha).put(pais,toptemp);
-                            }catch (Exception e){System.out.println("no agrego el pais");}
+                                arbolFechas.find(fecha).put(pais, toptemp);
+                            } catch (Exception e) {
+
+                            }
                             try {
                                 arbolFechas.find(fecha).get(pais).setTop(toptemp.getTop());
-                            }catch (Exception e){System.out.println("no agrego el top");}
-                        }
-                        if(arbolFechas.find(fecha).contains(pais)){
-                            toptemp.getTop().insert(c,dr);
-                            if(toptemp.getTop().size() == 50){
+                            } catch (Exception e) {
+                                System.out.println("no agrego el top");
+                            }
+                        } if (arbolFechas.find(fecha).Keys().contains(pais)) {
+                            toptemp.getTop().insert(c, dr);
+                            if (toptemp.getTop().size() == 50) {
                                 try {
-                                    arbolFechas.find(fecha).get(pais).setTop(toptemp.getTop());
-                                }catch (Exception e){System.out.println("no agrego el top lleno");}
+                                    String pa = arbolFechas.find(fecha).Keys().get(l);
+                                    arbolFechas.find(fecha).get(pa).setTop(toptemp.getTop());
+                                    l++;
+                                } catch (Exception e) {
+                                    System.out.println("no agrego el top lleno");
+                                }
                             }
 
                         }
                     }
-                    }
                 }
+            }
         } catch (IOException e) {
             System.out.println("No entro");
         }
+
+
+        //Pruebas
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        // Parse the date string to LocalDate
         LocalDate localDate = LocalDate.parse("13/05/2024", formatter);
-
-        // Assign to ChronoLocalDate
         ChronoLocalDate fecha = localDate;
-
         try {
-            int tamaño = arbolFechas.find(fecha).get("ZA").getTop().size();
-            System.out.println("tamaño= " + tamaño);
-        }catch (Exception e){System.out.println("no entra");}
+            if(arbolFechas.find(fecha).Keys().contains("ZA")){
+                System.out.println("ZA esta en esta fecha");
+            }
+            System.out.println("Los paises rgitrados en esta fecha son: ");
+            for(int p = 0; p<arbolFechas.find(fecha).Keys().size(); p++){
+                System.out.println(arbolFechas.find(fecha).Keys().get(p));
+            }
+            String pai = arbolFechas.find(fecha).Keys().get(1);
+            System.out.println(arbolFechas.find(fecha).get(pai).getTop().delete().getName() );
+            }catch (Exception e){System.out.println("no entra");}
+
 
     }
 }
