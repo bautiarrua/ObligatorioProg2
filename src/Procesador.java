@@ -26,27 +26,38 @@ public class Procesador {
         int size =53;
         int ca = 2;
         int l =0;
-        String fileName = "C:\\Users\\jarruabarrena\\OneDrive - Universidad de Montevideo\\Prog2\\Obligatorio\\universal_top_spotify_songs.csv";
+        //String fileName = "C:\\Users\\jarruabarrena\\OneDrive - Universidad de Montevideo\\Prog2\\Obligatorio\\universal_top_spotify_songs.csv";
+        String fileName = "C:\\Users\\franc\\OneDrive - Universidad de Montevideo\\Programación 1\\universal_top_spotify_songs";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String linea = br.readLine();
 //            while ((linea = br.readLine()) != null){
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++) { // Este for es para decirle cuantas lineas leer
                 System.out.println(ca);
                 linea = br.readLine();
                 if (linea != null) {
                     ca++;
+
+                    //Obtener los datos
                     String[] datos = linea.split(",\"");
+
                     String ar = datos[2];
                     String[] artistas = ar.split(",");
+
                     String pais = datos[6].replaceAll("\"", "");
+
                     ChronoLocalDate fecha = LocalDate.parse(datos[7].replaceAll("\"", ""));
-                    int dr = Integer.parseInt(datos[3].replaceAll("\"", ""));
+
+                    int dailyRank = Integer.parseInt(datos[3].replaceAll("\"", ""));
+
                     c = new Cancion(datos[0].replaceAll("\"", ""),
                             datos[1].replaceAll("\"", ""),
-                            Float.parseFloat(datos[3].replaceAll("\"", "")));
-                    for (int a = 0; a < artistas.length; a++) {
+                            Float.parseFloat(datos[24].replaceAll("\"", "")));//Le esta pasando el daily rank y no el tempo, Duda gral: como se hace cada lecrura del csv
+
+                    for (int a = 0; a < artistas.length; a++) { // Este for es para agregar los artistas a la cancion
                         c.getArtist().add(artistas[a].replaceAll("[\"; ]", ""));
                     }
+
+                    //Agragar los datos a su lugar
                     if (!arbolFechas.contains(fecha)) {
                         MyHashCerradoI<String, Top50> paises = new MyHashCerrado<>();
                         arbolFechas.add(fecha, paises);
@@ -57,7 +68,7 @@ public class Procesador {
                             toptemp.setPais(pais);
                             toptemp.setFecha(fecha);
                             toptemp.setTop(top);
-                            toptemp.getTop().insert(c, dr);
+                            toptemp.getTop().insert(c, dailyRank);
                             try {
                                 arbolFechas.find(fecha).put(pais, toptemp);
                             } catch (Exception e) {
@@ -69,7 +80,7 @@ public class Procesador {
                                 System.out.println("no agrego el top");
                             }
                         } if (arbolFechas.find(fecha).Keys().contains(pais)) {
-                            toptemp.getTop().insert(c, dr);
+                            toptemp.getTop().insert(c, dailyRank);
                             if (toptemp.getTop().size() == 50) {
                                 try {
                                     String pa = arbolFechas.find(fecha).Keys().get(l);
