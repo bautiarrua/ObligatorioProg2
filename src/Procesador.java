@@ -51,7 +51,7 @@ public class Procesador {
 
                     c = new Cancion(datos[0].replaceAll("\"", ""),
                             datos[1].replaceAll("\"", ""),
-                            Float.parseFloat(datos[24].replaceAll("\"", "")));//Le esta pasando el daily rank y no el tempo, Duda gral: como se hace cada lecrura del csv
+                            Float.parseFloat(datos[24].replaceAll("\"", "")));
 
                     for (int a = 0; a < artistas.length; a++) { // Este for es para agregar los artistas a la cancion
                         c.getArtist().add(artistas[a].replaceAll("[\"; ]", ""));
