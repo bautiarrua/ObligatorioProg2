@@ -62,7 +62,7 @@ public class MyHashCerrado<K,V> implements MyHashCerradoI<K,V> {
         int indice = hash(key) % capacity;
         int cont = 0;
         if(table[indice] != null) {
-            while (table[indice].getKey() != key) {
+            while (!table[indice].getKey().equals(key)) {
                 a++;
                 indice = (hash(key) + a) % capacity;
                 cont = cont + 1;
@@ -85,10 +85,10 @@ public class MyHashCerrado<K,V> implements MyHashCerradoI<K,V> {
         int indice = hash(key) % capacity;
         int cont = 0;
         if (table[indice] != null) {
-            while (table[indice].getKey() != key) {
+            while (!table[indice].getKey().equals(key)) {
                 a++;
                 indice = (hash(key) + a) % capacity;
-                cont = cont + 1;
+                cont++;
                 if (cont > capacity) {
                     return false;
                 }
