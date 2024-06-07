@@ -20,11 +20,11 @@ public class Procesador {
     public static void main(String[] args) {
 
 //        MyHashCerrado<String, Top50> paises = new MyHashCerrado<>();
-        MyArbolbinario<ChronoLocalDate, MyHashCerradoI<String, Top50>> arbolFechas = new Arbolbinario<>();
+        Arbolbinario<ChronoLocalDate, MyHashCerrado<String, Top50>> arbolFechas = new Arbolbinario<>();
         Cancion c;
         Top50 toptemp = new Top50(null, null);
         int size =750000;
-        int ca = 2;
+        // int ca = 2;
         int l =0;
         //String fileName = "C:\\Users\\jarruabarrena\\OneDrive - Universidad de Montevideo\\Prog2\\Obligatorio\\universal_top_spotify_songs.csv";
         String fileName = "C:\\Users\\jarruabarrena\\OneDrive - Universidad de Montevideo\\Prog2\\Obligatorio\\universal_top_spotify_songs.csv";
@@ -32,8 +32,11 @@ public class Procesador {
             String linea = br.readLine();
 //            while ((linea = br.readLine()) != null){
             for (int i = 0; i < size; i++) { // Este for es para decirle cuantas lineas leer
+                //System.out.println(ca);
                 linea = br.readLine();
                 if (linea != null) {
+                    // ca++;
+
                     //Obtener los datos
                     String[] datos = linea.split(",\"");
 
@@ -56,7 +59,7 @@ public class Procesador {
 
                     //Agragar los datos a su lugar
                     if (!arbolFechas.contains(fecha)) {
-                        MyHashCerradoI<String, Top50> paises = new MyHashCerrado<>();
+                        MyHashCerrado<String, Top50> paises = new MyHashCerrado<>();
                         arbolFechas.add(fecha, paises);
                     }
                     if (arbolFechas.contains(fecha)) {
@@ -80,10 +83,9 @@ public class Procesador {
                             toptemp.getTop().insert(c, dailyRank);
                             if (toptemp.getTop().size() == 50) {
                                 try {
-                                    String pa = arbolFechas.find(fecha).Keys().get(l);
-                                    arbolFechas.find(fecha).get(pa).setTop(toptemp.getTop());
-                                    l++;
+                                    arbolFechas.find(fecha).get(pais).setTop(toptemp.getTop());
                                 } catch (Exception e) {
+                                    System.out.println("no agrego el top lleno");
                                 }
                             }
 
@@ -106,11 +108,32 @@ public class Procesador {
             }
             System.out.println("Los paises rgitrados en esta fecha son: ");
             for(int p = 0; p<arbolFechas.find(fecha).Keys().size(); p++){
-                System.out.print(arbolFechas.find(fecha).Keys().get(p) + " || ");
+                System.out.println(arbolFechas.find(fecha).Keys().get(p));
             }
             String pai = arbolFechas.find(fecha).Keys().get(1);
             System.out.println(arbolFechas.find(fecha).get(pai).getTop().delete().getName() );
             }catch (Exception e){System.out.println("no entra");}
+        try {
+            if (arbolFechas.contains(fecha)) {
+                MyHashCerrado<String,Top50> fechaData = arbolFechas.find(fecha);
+                if (fechaData != null && fechaData.contains("")) {
+                    Top50 zaData = fechaData.get("");
+                    if (zaData != null && zaData.getTop() != null) {
+                        int tamaño = zaData.getTop().size();
+                        System.out.println("tamaño = " + tamaño);
+                    } else {
+                        System.out.println("Top50 o su Top es null");
+                    }
+                } else {
+                    System.out.println("Fecha no contiene ZA");
+                }
+            } else {
+                System.out.println("ArbolFechas no contiene la fecha");
+            }
+            System.out.println("el top 1 de ZA el dia de la fecha es  "+ arbolFechas.find(fecha).get("ZA").getTop().delete().getTempo());
+        } catch (Exception e) {
+            System.out.println("Ocurrió una excepción: " + e.getMessage());
+        }
 
 
     }
