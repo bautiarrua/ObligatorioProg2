@@ -1,5 +1,6 @@
 import Entities.Cancion;
 import Entities.Top50;
+import adt.Exceptions.NoEsta;
 import adt.Heap.MyHeap;
 import adt.Heap.MyHeapIMPL;
 import adt.arbolbinario.Arbolbinario;
@@ -30,7 +31,6 @@ public class Procesador {
 
        Arbolbinario<ChronoLocalDate, MyHashCerrado<String, Top50>> arbolFechas = new Arbolbinario<>();
        Cancion c;
-       Top50 toptemp = new Top50(null, null);
        int size = 750000;
        // int ca = 2;
        int l = 0;
@@ -72,32 +72,16 @@ public class Procesador {
                    }
                    if (arbolFechas.contains(fecha)) {
                        if (!arbolFechas.find(fecha).Keys().contains(pais)) {
-                           MyHeap<Cancion, Integer> top = new MyHeapIMPL<>();
-                           toptemp.setPais(pais);
-                           toptemp.setFecha(fecha);
-                           toptemp.setTop(top);
-                           toptemp.getTop().insert(c, dailyRank);
+                           Top50 toptemp = new Top50(pais,fecha);
                            try {
                                arbolFechas.find(fecha).put(pais, toptemp);
                            } catch (Exception e) {
-
-                           }
-                           try {
-                               arbolFechas.find(fecha).get(pais).setTop(toptemp.getTop());
-                           } catch (Exception e) {
-                               System.out.println("no agrego el top");
                            }
                        }
                        if (arbolFechas.find(fecha).Keys().contains(pais)) {
-                           toptemp.getTop().insert(c, dailyRank);
-                           if (toptemp.getTop().size() == 50) {
-                               try {
-                                   arbolFechas.find(fecha).get(pais).setTop(toptemp.getTop());
-                               } catch (Exception e) {
-                                   System.out.println("no agrego el top lleno");
-                               }
-                           }
-
+                           try {
+                               arbolFechas.find(fecha).get(pais).getTop().insert(c, dailyRank);
+                           }catch (NoEsta e){}
                        }
                    }
                }
@@ -107,10 +91,10 @@ public class Procesador {
        }
 
 
-//        //Pruebas
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//        LocalDate localDate = LocalDate.parse("13/05/2024", formatter);
-//        ChronoLocalDate fecha = localDate;
+        //Pruebas
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate localDate = LocalDate.parse("30/11/2023", formatter);
+        ChronoLocalDate fecha = localDate;
 //        try {
 //            if(arbolFechas.find(fecha).Keys().contains("ZA")){
 //                System.out.println("ZA esta en esta fecha");
@@ -139,7 +123,10 @@ public class Procesador {
 //            } else {
 //                System.out.println("ArbolFechas no contiene la fecha");
 //            }
-//            System.out.println("el top 1 de ZA el dia de la fecha es  "+ arbolFechas.find(fecha).get("ZA").getTop().delete().getTempo());
+//            System.out.println("el top 1 de UY el dia de la fecha es  "+ arbolFechas.find(fecha).get("UY").getTop().delete().getName());
+//            System.out.println("el top 2 de UY el dia de la fecha es  "+ arbolFechas.find(fecha).get("UY").getTop().delete().getName());
+//            System.out.println("el top 3 de UY el dia de la fecha es  "+ arbolFechas.find(fecha).get("UY").getTop().delete().getName());
+//            System.out.println("el top 4 de UY el dia de la fecha es  "+ arbolFechas.find(fecha).get("UY").getTop().delete().getName());
 //        } catch (Exception e) {
 //            System.out.println("Ocurrió una excepción: " + e.getMessage());
 //        }
@@ -150,8 +137,8 @@ public class Procesador {
 //
 //       // Calcular el uso de memoria
 //       long memoryUsed = usedMemoryAfter - usedMemoryBefore;
-
-       // Calcular el tiempo transcurrido en nanosegundos
+//
+////        Calcular el tiempo transcurrido en nanosegundos
 //        long duration = (endTime - startTime);
 //
 //        // Convertir a milisegundos y segundos si es necesario
@@ -163,7 +150,6 @@ public class Procesador {
 //
 //        System.out.println("Memoria usada: " + (memoryUsed / 1024) + " KB");
 //        System.out.println("Memoria usada: " + (memoryUsed / (1024 * 1024)) + " MB");
-
-   return arbolFechas;
+        return arbolFechas;
    }
 }
