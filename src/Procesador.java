@@ -19,7 +19,15 @@ import java.util.HashMap;
 public class Procesador {
     public static void main(String[] args) {
 
-//        MyHashCerrado<String, Top50> paises = new MyHashCerrado<>();
+        // Obtener la instancia de Runtime
+        Runtime runtime = Runtime.getRuntime();
+
+        // Medir la memoria antes de ejecutar el código
+        long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+        // Iniciar la medición del tiempo
+        long startTime = System.nanoTime();
+
         Arbolbinario<ChronoLocalDate, MyHashCerrado<String, Top50>> arbolFechas = new Arbolbinario<>();
         Cancion c;
         Top50 toptemp = new Top50(null, null);
@@ -134,7 +142,26 @@ public class Procesador {
         } catch (Exception e) {
             System.out.println("Ocurrió una excepción: " + e.getMessage());
         }
+        long endTime = System.nanoTime();
 
+        // Medir la memoria después de ejecutar el código
+        long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+        // Calcular el uso de memoria
+        long memoryUsed = usedMemoryAfter - usedMemoryBefore;
+
+        // Calcular el tiempo transcurrido en nanosegundos
+        long duration = (endTime - startTime);
+
+        // Convertir a milisegundos y segundos si es necesario
+        long durationInMillis = duration / 1_000_000;
+        double durationInSeconds = duration / 1_000_000_000.0;
+
+        System.out.println("El código tomó: " + durationInMillis + " milisegundos");
+        System.out.println("El código tomó: " + durationInSeconds + " segundos");
+
+        System.out.println("Memoria usada: " + (memoryUsed / 1024) + " KB");
+        System.out.println("Memoria usada: " + (memoryUsed / (1024 * 1024)) + " MB");
 
     }
 }
