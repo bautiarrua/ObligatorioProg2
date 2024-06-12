@@ -1,4 +1,5 @@
 package adt.arbolbinario;
+import adt.linkedlist.MyLinkedListImpl;
 import adt.linkedlist.MyList;
 
 public interface MyArbolbinario<K extends Comparable<K>, V> {

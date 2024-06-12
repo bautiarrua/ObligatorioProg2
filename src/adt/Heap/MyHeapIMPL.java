@@ -33,4 +33,11 @@ public class MyHeapIMPL<V,K extends Comparable<K>> implements  MyHeap<V,K>{
     public int size() {
         return heap.size();
     }
+    public MyHeap<V, K> clonar() {
+        MyHeap<V, K> clonedHeap = new MyHeapIMPL<>();
+        for (NodoH<V, K> node : this.heap) {
+            clonedHeap.insert(node.value, node.key);
+        }
+        return clonedHeap;
+    }
 }

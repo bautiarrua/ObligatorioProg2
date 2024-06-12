@@ -6,4 +6,6 @@ public interface MyHeap<V,K extends Comparable<K>>{
     V get();
     void insert(V value, K key);
     int size();
+
+    MyHeap<V,K> clonar();
 }
