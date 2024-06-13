@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import java.util.Scanner;
 
+import Entities.Artista;
 import Entities.Cancion;
 import Entities.Top50;
 import adt.Exceptions.NoEsta;
@@ -76,19 +77,51 @@ public class Sistema {
     }
 
     public int cant_canc_tempo (){
-//        Scanner scanner1 = Scanner(System.in);
-//        String fecha1 = scanner1.nextLine();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//        LocalDate localDate = LocalDate.parse(fecha1, formatter);
-//        ChronoLocalDate fecha1Formato = localDate;
-//
-//
-//        Scanner scanner2 = new Scanner(System.in);
-//        String fecha2 = scanner2.nextLine();
-//        LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
-//        ChronoLocalDate fecha2Formato = localDate;
-//
-//
-        return 0;
+        System.out.println("------------------------------------------------------");
+        MyList<String> cancionesYaContadas = new MyLinkedListImpl<>();
+        int cantcan = 0;
+        Scanner scanner1 = new Scanner(System.in);
+        System.out.println("Seleccione la fehca de inicio");
+        String fecha1 = scanner1.nextLine();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate localDate = LocalDate.parse(fecha1, formatter);
+        ChronoLocalDate fecha1Formato = localDate;
+        Scanner scanner2 = new Scanner(System.in);
+        System.out.println("Seleccione la fehca de fin");
+        String fecha2 = scanner2.nextLine();
+        LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
+        ChronoLocalDate fecha2Formato = localDate2;
+        Scanner scanner3 = new Scanner(System.in);
+        System.out.println("Seleccione el menor del rengo del tempo");
+        String tempS1 = scanner3.nextLine();
+        Float temp1 = Float.parseFloat(tempS1);
+        Scanner scanner4 = new Scanner(System.in);
+        System.out.println("Seleccione el mayor del rengo del tempo");
+        String tempS2 = scanner4.nextLine();
+        Float temp2 = Float.parseFloat(tempS2);
+        ChronoLocalDate tempfecha = fecha1Formato;
+        while (!tempfecha.equals(fecha2Formato)){
+            MyList<Top50> recorrer = arbolBusqueda.find(tempfecha).Values();
+            for(int i = 0; i<recorrer.size(); i++){
+                Top50 tempTop = recorrer.get(i);
+                MyHeap<Cancion, Integer> clonTop = tempTop.getTop().clonar();
+                for(int j = 0; j<50; j++){
+                    Cancion canciontemp = clonTop.delete();
+                    Float tempo = canciontemp.getTempo();
+                    if(tempo>temp1 && tempo<temp2){
+                        if(!cancionesYaContadas.contains(canciontemp.getName())){
+                            cantcan++;
+                            cancionesYaContadas.add(canciontemp.getName());
+                        }
+
+                    }
+                }
+            }
+            tempfecha = tempfecha.plus(1, java.time.temporal.ChronoUnit.DAYS);
+        }
+        System.out.println("------------------------------------------------------");
+        System.out.println("Hay "+ cantcan+" En ese rango de fechas con ese rango de tempo");
+        System.out.println("------------------------------------------------------");
+        return cantcan;
     }
 }
