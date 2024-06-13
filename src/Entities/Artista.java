@@ -2,7 +2,7 @@ package Entities;
 
 import java.util.List;
 
-public class Artista {
+public class Artista implements Comparable<Artista> {
 
     private String nombre;
     //List<Cancion> canciones;
@@ -36,4 +36,14 @@ public class Artista {
     //public void setCanciones(List<Cancion> canciones) {
       //  this.canciones = canciones;
     //}
+
+    public int compareTo(Artista a) {
+        if (this.Contdor < a.getContdor()) {
+            return 1;
+        } else if (this.Contdor > a.getContdor()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

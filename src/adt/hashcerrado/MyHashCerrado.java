@@ -3,6 +3,7 @@ package adt.hashcerrado;
 import adt.Exceptions.NoEsta;
 import adt.Exceptions.YaExiste;
 import adt.linkedlist.MyLinkedListImpl;
+import java.math.*;
 
 
 public class MyHashCerrado<K,V> implements MyHashCerradoI<K,V> {
@@ -27,7 +28,9 @@ public class MyHashCerrado<K,V> implements MyHashCerradoI<K,V> {
     }
 
     private int hash(K key) {
-        return key.hashCode();
+        int  k = key.hashCode();
+        k = (k & 0x7ffffff);
+        return  k;
     }
 
     public void put(K key, V value) throws YaExiste {

@@ -8,7 +8,7 @@ public class Cancion {
 
     private String spotifyId;//0
     private String name;//1
-    private List<Artista> artist;//2 No hay q usar nustra lsita??
+    private List<String> artist;//2 No hay q usar nustra lsita??
     private Float tempo;//23
 
 //    int dailyRank;//3
