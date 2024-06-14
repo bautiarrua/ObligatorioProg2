@@ -4,7 +4,9 @@ public class Menu {
 
     public void eleccion(){
         boolean devuelta = true;
+        System.out.println("A continuacion se le mostrara cuanto demora en ejecutarse el procesador");
         Sistema sis = new Sistema();
+        System.out.println("------------------------------------------------------");
         while (devuelta) {
             System.out.println("Haga su eleccion");
             Scanner scanner = new Scanner(System.in);

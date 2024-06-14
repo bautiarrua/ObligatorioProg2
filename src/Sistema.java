@@ -93,6 +93,7 @@ public class Sistema {
             Artista ArtistaTemp = artistaFechas.get(i);
             heapArtistas.insert(ArtistaTemp, ArtistaTemp);
         }
+        System.out.println("------------------------------------------------------");
         for(int j = 0; j<7; j++){
             Artista tempArtist = heapArtistas.delete();
             System.out.println("TOP "+ (j+1)+" "+tempArtist.getNombre());
@@ -101,11 +102,12 @@ public class Sistema {
             Artista ArtistaTemp = artistaFechas.get(i);
             ArtistaTemp.setContdor(0);
         }
+        System.out.println("------------------------------------------------------");
     }
 
     public Object Top_5_canciones() {
         Scanner scanner2 = new Scanner(System.in);
-        System.out.println("diga la fecha de la que quiere sber el top");
+        System.out.println("diga la fecha de la que quiere sber el top con el formato dd/mm/yyyy");
         String fecha = scanner2.nextLine();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.parse(fecha, formatter);
@@ -136,13 +138,13 @@ public class Sistema {
             try {
                 Artista tempA = procesador.hash().get(nombreA.toLowerCase());
                 Scanner scanner1 = new Scanner(System.in);
-                System.out.println("Seleccione la fehca de inicio");
+                System.out.println("Seleccione la fehca de inicio con el formato dd/mm/yyyy");
                 String fecha1 = scanner1.nextLine();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate localDate = LocalDate.parse(fecha1, formatter);
                 ChronoLocalDate fecha1Formato = localDate;
                 Scanner scanner2 = new Scanner(System.in);
-                System.out.println("Seleccione la fehca de fin");
+                System.out.println("Seleccione la fehca de fin con el formato dd/mm/yyyy");
                 String fecha2 = scanner2.nextLine();
                 LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
                 ChronoLocalDate fecha2Formato = localDate2;
@@ -178,13 +180,13 @@ public class Sistema {
         MyList<String> cancionesYaContadas = new MyLinkedListImpl<>();
         int cantcan = 0;
         Scanner scanner1 = new Scanner(System.in);
-        System.out.println("Seleccione la fehca de inicio");
+        System.out.println("Seleccione la fehca de inicio con el formato dd/mm/yyyy");
         String fecha1 = scanner1.nextLine();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.parse(fecha1, formatter);
         ChronoLocalDate fecha1Formato = localDate;
         Scanner scanner2 = new Scanner(System.in);
-        System.out.println("Seleccione la fehca de fin");
+        System.out.println("Seleccione la fehca de fin con el formato dd/mm/yyyy");
         String fecha2 = scanner2.nextLine();
         LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
         ChronoLocalDate fecha2Formato = localDate2;
