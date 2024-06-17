@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 public class Procesador {
     MyHashCerradoI<String, Artista> hashArtistas = new MyHashCerrado<>();
+    MyHashCerrado<String, Cancion> hashCanciones = new MyHashCerrado<>();
    public Arbolbinario<ChronoLocalDate,MyHashCerrado<String, Top50>> arbol() {
 
        // Obtener la instancia de Runtime
@@ -33,7 +34,7 @@ public class Procesador {
        long startTime = System.nanoTime();
 
        Arbolbinario<ChronoLocalDate, MyHashCerrado<String, Top50>> arbolFechas = new Arbolbinario<>();
-       Cancion c;
+       Cancion c = null;
        int size = 750000;
        // int ca = 2;
        int l = 0;
@@ -58,20 +59,30 @@ public class Procesador {
                    ChronoLocalDate fecha = LocalDate.parse(datos[7].replaceAll("\"", ""));
 
                    int dailyRank = Integer.parseInt(datos[3].replaceAll("\"", ""));
+                   String id = datos[0].replaceAll("\"", "");
+                   if(!hashCanciones.contains(id)) {
+                       c = new Cancion(id,
+                               datos[1].replaceAll("\"", ""),
+                               Float.parseFloat(datos[23].replaceAll("\"", "")));
 
-                   c = new Cancion(datos[0].replaceAll("\"", ""),
-                           datos[1].replaceAll("\"", ""),
-                           Float.parseFloat(datos[23].replaceAll("\"", "")));
-
-                   for (int a = 0; a < artistas.length; a++) { // Este for es para agregar los artistas a la cancion
-                       String nombre = artistas[a].replaceAll("[\"; ]", "").toLowerCase();
-                       c.getArtist().add(nombre);
-                       if(!hashArtistas.contains(nombre)){
-                           Artista tempArtista = new Artista(nombre);
-                           try {
-                               hashArtistas.put(nombre,tempArtista);
-                           }catch (YaExiste e){}
+                       for (int a = 0; a < artistas.length; a++) { // Este for es para agregar los artistas a la cancion
+                           String nombre = artistas[a].replaceAll("[\"; ]", "").toLowerCase();
+                           c.getArtist().add(nombre);
+                           if (!hashArtistas.contains(nombre)) {
+                               Artista tempArtista = new Artista(nombre);
+                               try {
+                                   hashArtistas.put(nombre, tempArtista);
+                               } catch (YaExiste e) {
+                               }
+                           }
                        }
+                       try {
+                           hashCanciones.put(id, c);
+                       }catch (YaExiste e){}
+                   }else{
+                       try {
+                           c = hashCanciones.get(datos[0].replaceAll("\"", ""));
+                       }catch (NoEsta e){}
                    }
                    //Agragar los datos a su lugar
                    if (!arbolFechas.contains(fecha)) {
@@ -89,7 +100,7 @@ public class Procesador {
                        if (arbolFechas.find(fecha).Keys().contains(pais)) {
                            try {
                                arbolFechas.find(fecha).get(pais).getTop().insert(c, dailyRank);
-                           }catch (NoEsta e){}
+                           }catch (Exception e){}
                        }
                    }
                }

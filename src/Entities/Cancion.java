@@ -4,12 +4,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cancion {
+public class Cancion implements Comparable<Cancion> {
 
     private String spotifyId;//0
     private String name;//1
     private List<String> artist;//2 No hay q usar nustra lsita??
     private Float tempo;//23
+    int contador;
 
 //    int dailyRank;//3
 //    int dailyMovements;//4
@@ -39,6 +40,7 @@ public class Cancion {
         this.name = name;
         this.tempo = tempo;
         this.artist = new ArrayList<>();
+        this.contador = 0;
     }
 
 
@@ -82,4 +84,20 @@ public class Cancion {
         this.tempo = tempo;
     }
 
+    public int getContador() {
+        return contador;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
+    }
+    public int compareTo(Cancion a) {
+        if (this.contador < a.getContador()) {
+            return 1;
+        } else if (this.contador > a.getContador()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

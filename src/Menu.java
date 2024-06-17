@@ -17,23 +17,23 @@ public class Menu {
                     "El 5 para obtener las canciones con un rango en especifico en un rango de fecha \n" +
                     "El 0 para salir del bucle \n" +
                     "Cualquier si la opcion es otra se volvera a preguntar ");
-            int eleccion = scanner.nextInt();
-            if (eleccion == 1) {
+            String eleccion = scanner.nextLine();
+            if (eleccion.equals("1")) {
                 sis.Top_10_canciones();
             }
-            if (eleccion == 2) {
+            if (eleccion.equals("2")) {
                 sis.Top_5_canciones();
             }
-            if (eleccion == 3) {
+            if (eleccion.equals("3")) {
                 sis.Top_7_artistas();
             }
-            if (eleccion == 4) {
+            if (eleccion.equals("4")) {
                 sis.cant_art();
             }
-            if (eleccion == 5) {
+            if (eleccion.equals("4")) {
                 sis.cant_canc_tempo();
             }
-            if (eleccion == 0) {
+            if (eleccion.equals(0)) {
                 devuelta = false;
             }
         }

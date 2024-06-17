@@ -139,28 +139,44 @@ public class Sistema {
         }
     }
 
-    public Object Top_5_canciones() {
+    public void Top_5_canciones() {
+        Cancion canciontemp = null;
+        MyList<Cancion> cancionesQueEstan = new MyLinkedListImpl<>();
+        MyHeap<Cancion, Cancion> topCancion = new MyHeapIMPL<>();
         Scanner scanner2 = new Scanner(System.in);
         System.out.println("diga la fecha de la que quiere sber el top con el formato dd/mm/yyyy");
         String fecha = scanner2.nextLine();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.parse(fecha, formatter);
         ChronoLocalDate fechaFormato = localDate;
-        arbolBusqueda.find(fechaFormato).Keys();
+        MyList<Top50> recorrer = arbolBusqueda.find(fechaFormato).Values();
         for (int i = 0; i < arbolBusqueda.find(fechaFormato).Keys().size(); i++) {
-            String key = arbolBusqueda.find(fechaFormato).Keys().get(i);
-            try {
-                for (int j = 0; j < 50; j++) {
-                    arbolBusqueda.find(fechaFormato).get(key).getTop().delete().getArtist();
-
-
+            Top50 tempTop = recorrer.get(i);
+            MyHeap<Cancion, Integer> clonTop = tempTop.getTop().clonar();
+            int tam = clonTop.size();
+            for (int j = 0; j < tam; j++) {
+                String id = clonTop.delete().getSpotifyId();
+                try {
+                   canciontemp = procesador.hashCanciones.get(id);
+                }catch (NoEsta e){}
+                int contAnt = canciontemp.getContador();
+                canciontemp.setContador(contAnt+1);
+                if(!cancionesQueEstan.contains(canciontemp)){
+                    cancionesQueEstan.add(canciontemp);
                 }
-            } catch (NoEsta e) {
             }
-
         }
-
-        return null;
+        System.out.println(cancionesQueEstan.size());
+        for(int i = 0; i<cancionesQueEstan.size();i++){
+            topCancion.insert(cancionesQueEstan.get(i),cancionesQueEstan.get(i));
+        }
+        for(int i = 0; i<5;i++){
+            Cancion tempcancion = topCancion.delete();
+            System.out.println("Top "+(i+1)+" " + tempcancion.getName() + " con "+ tempcancion.getContador()+" veces");
+        }
+        for(int i = 0; i<cancionesQueEstan.size();i++){
+            cancionesQueEstan.get(i).setContador(0);
+        }
     }
 
     public void cant_art() {
