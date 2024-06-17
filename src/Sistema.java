@@ -129,7 +129,7 @@ public class Sistema {
             System.out.println("------------------------------------------------------");
             for (int j = 0; j < 7; j++) {
                 Artista tempArtist = heapArtistas.delete();
-                System.out.println("TOP " + (j + 1) + " " + tempArtist.getNombre());
+                System.out.println("TOP " + (j + 1) + " " + tempArtist.getNombre() + " con " + tempArtist.getContdor() + " veces");
             }
             for (int i = 0; i < artistaFechas.size(); i++) {
                 Artista ArtistaTemp = artistaFechas.get(i);
