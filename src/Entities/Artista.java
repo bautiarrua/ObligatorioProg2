@@ -6,10 +6,12 @@ public class Artista implements Comparable<Artista> {
 
     private String nombre;
     //List<Cancion> canciones;
+    private  String nombreV;
     private Integer Contdor; //Pa contar las veces q aparece en el top 50
 
-    public Artista(String nombre) {
+    public Artista(String nombre, String nombreV) {
         this.nombre = nombre;
+        this.nombreV = nombreV;
         this.Contdor = 0;
     }
 
@@ -29,13 +31,13 @@ public class Artista implements Comparable<Artista> {
         this.Contdor = Contdor;
     }
 
-    //public List<Cancion> getCanciones() {
-     //   return canciones;
-    //}
+    public String getNombreV() {
+        return nombreV;
+    }
 
-    //public void setCanciones(List<Cancion> canciones) {
-      //  this.canciones = canciones;
-    //}
+    public void setNombreV(String nombreV) {
+        this.nombreV = nombreV;
+    }
 
     public int compareTo(Artista a) {
         if (this.Contdor < a.getContdor()) {

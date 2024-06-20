@@ -8,6 +8,7 @@ import Entities.Artista;
 import Entities.Cancion;
 import Entities.Top50;
 import adt.Exceptions.NoEsta;
+import adt.Exceptions.YaExiste;
 import adt.Heap.MyHeap;
 import adt.Heap.MyHeapIMPL;
 import adt.arbolbinario.Arbolbinario;
@@ -87,10 +88,10 @@ public class Sistema {
         if (fecha1Formato.isAfter(fecha2Formato)) {
             System.out.println("No tiene sentido el orden");
         }
-        if (fecha1Formato.isBefore(primeraFecha)) {
+        else if (fecha1Formato.isBefore(primeraFecha)) {
             System.out.println("No tenemos registro de una fecha tan lejana");
         }
-        if (fecha2Formato.isAfter(ultimaFecha)) {
+        else if (fecha2Formato.isAfter(ultimaFecha)) {
             System.out.println("No tenemos registro de una fecha tan cercana");
         } else {
             while (!tempfecha.equals(fecha2Formato)) {
@@ -129,7 +130,7 @@ public class Sistema {
             System.out.println("------------------------------------------------------");
             for (int j = 0; j < 7; j++) {
                 Artista tempArtist = heapArtistas.delete();
-                System.out.println("TOP " + (j + 1) + " " + tempArtist.getNombre() + " con " + tempArtist.getContdor() + " veces");
+                System.out.println("TOP " + (j + 1) + " " + tempArtist.getNombreV() + " con " + tempArtist.getContdor() + " veces");
             }
             for (int i = 0; i < artistaFechas.size(); i++) {
                 Artista ArtistaTemp = artistaFechas.get(i);
@@ -140,42 +141,60 @@ public class Sistema {
     }
 
     public void Top_5_canciones() {
+        LocalDate localDate = null;
         Cancion canciontemp = null;
         MyList<Cancion> cancionesQueEstan = new MyLinkedListImpl<>();
         MyHeap<Cancion, Cancion> topCancion = new MyHeapIMPL<>();
-        Scanner scanner2 = new Scanner(System.in);
-        System.out.println("diga la fecha de la que quiere sber el top con el formato dd/mm/yyyy");
-        String fecha = scanner2.nextLine();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate localDate = LocalDate.parse(fecha, formatter);
-        ChronoLocalDate fechaFormato = localDate;
-        MyList<Top50> recorrer = arbolBusqueda.find(fechaFormato).Values();
-        for (int i = 0; i < arbolBusqueda.find(fechaFormato).Keys().size(); i++) {
-            Top50 tempTop = recorrer.get(i);
-            MyHeap<Cancion, Integer> clonTop = tempTop.getTop().clonar();
-            int tam = clonTop.size();
-            for (int j = 0; j < tam; j++) {
-                String id = clonTop.delete().getSpotifyId();
-                try {
-                   canciontemp = procesador.hashCanciones.get(id);
-                }catch (NoEsta e){}
-                int contAnt = canciontemp.getContador();
-                canciontemp.setContador(contAnt+1);
-                if(!cancionesQueEstan.contains(canciontemp)){
-                    cancionesQueEstan.add(canciontemp);
-                }
+        while (localDate == null) {
+            Scanner scanner1 = new Scanner(System.in);
+            System.out.println("Seleccione la fehca con el formato dd/mm/yyyy");
+            String fecha1 = scanner1.nextLine();
+            try {
+                localDate = LocalDate.parse(fecha1, formatter);
+            } catch (Exception e) {
+                System.out.println("La fecha no es compatible con el formato");
             }
         }
-        System.out.println(cancionesQueEstan.size());
-        for(int i = 0; i<cancionesQueEstan.size();i++){
-            topCancion.insert(cancionesQueEstan.get(i),cancionesQueEstan.get(i));
+        ChronoLocalDate fechaFormato = localDate;
+        LocalDate localdatepri = LocalDate.parse("18/10/2023", formatter);
+        ChronoLocalDate primeraFecha = localdatepri;
+        LocalDate localdateult = LocalDate.parse("14/05/2024", formatter);
+        ChronoLocalDate ultimaFecha = localdateult;
+        if (fechaFormato.isBefore(primeraFecha)) {
+            System.out.println("No tenemos registro de una fecha tan lejana");
         }
-        for(int i = 0; i<5;i++){
-            Cancion tempcancion = topCancion.delete();
-            System.out.println("Top "+(i+1)+" " + tempcancion.getName() + " con "+ tempcancion.getContador()+" veces");
-        }
-        for(int i = 0; i<cancionesQueEstan.size();i++){
-            cancionesQueEstan.get(i).setContador(0);
+        else if (fechaFormato.isAfter(ultimaFecha)) {
+            System.out.println("No tenemos registro de una fecha tan cercana");
+        }else {
+            MyList<Top50> recorrer = arbolBusqueda.find(fechaFormato).Values();
+            for (int i = 0; i < arbolBusqueda.find(fechaFormato).Keys().size(); i++) {
+                Top50 tempTop = recorrer.get(i);
+                MyHeap<Cancion, Integer> clonTop = tempTop.getTop().clonar();
+                int tam = clonTop.size();
+                for (int j = 0; j < tam; j++) {
+                    String id = clonTop.delete().getSpotifyId();
+                    try {
+                        canciontemp = procesador.hashCanciones.get(id);
+                    } catch (NoEsta e) {
+                    }
+                    int contAnt = canciontemp.getContador();
+                    canciontemp.setContador(contAnt + 1);
+                    if (!cancionesQueEstan.contains(canciontemp)) {
+                        cancionesQueEstan.add(canciontemp);
+                    }
+                }
+            }
+            for (int i = 0; i < cancionesQueEstan.size(); i++) {
+                topCancion.insert(cancionesQueEstan.get(i), cancionesQueEstan.get(i));
+            }
+            for (int i = 0; i < 5; i++) {
+                Cancion tempcancion = topCancion.delete();
+                System.out.println("Top " + (i + 1) + " " + tempcancion.getName() + " con " + tempcancion.getContador() + " veces");
+            }
+            for (int i = 0; i < cancionesQueEstan.size(); i++) {
+                cancionesQueEstan.get(i).setContador(0);
+            }
         }
     }
 
@@ -207,10 +226,10 @@ public class Sistema {
                 if (fecha1Formato.isBefore(primeraFecha)) {
                     System.out.println("No tenemos registro de una fecha tan lejana");
                 }
-                if (fecha1Formato.isAfter(ultimaFecha)) {
+                else if (fecha1Formato.isAfter(ultimaFecha)) {
                     System.out.println("No tenemos registro de una fecha tan cercana");
                 }
-                if (arbolBusqueda.find(fecha1Formato) != null) {
+                else if (arbolBusqueda.find(fecha1Formato) != null) {
                     MyList<Top50> recorrer = arbolBusqueda.find(fecha1Formato).Values();
                     for (int i = 0; i < recorrer.size(); i++) {
                         Top50 tempTop = recorrer.get(i);
@@ -224,8 +243,8 @@ public class Sistema {
                             }
                         }
                     }
+                    System.out.println("El artista aparece " + tempA.getContdor() + " veces");
                 }
-                System.out.println("El artista aparece " + tempA.getContdor() + " veces");
                 tempA.setContdor(0);
             } catch (NoEsta e) {
             }
@@ -236,10 +255,9 @@ public class Sistema {
     }
 
 
-    public int cant_canc_tempo () {
+    public void cant_canc_tempo () {
         System.out.println("------------------------------------------------------");
-        MyList<String> cancionesYaContadas = new MyLinkedListImpl<>();
-        int cantcan = 0;
+        MyHashCerradoI<Cancion,Cancion> cancionesYaContadas = new MyHashCerrado<>();
         LocalDate localDate = null;
         LocalDate localDate2 = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -252,7 +270,6 @@ public class Sistema {
             } catch (Exception e) {
                 System.out.println("La fecha no es compatible con el formato");
             }
-
         }
         ChronoLocalDate fecha1Formato = localDate;
         while (localDate2 == null) {
@@ -282,12 +299,12 @@ public class Sistema {
         if (fecha1Formato.isAfter(fecha2Formato)) {
             System.out.println("No tiene sentido el orden");
         }
-        if (fecha1Formato.isBefore(primeraFecha)) {
+        else if (fecha1Formato.isBefore(primeraFecha)) {
             System.out.println("No tenemos registro de una fecha tan lejana");
-        }
-        if (fecha2Formato.isAfter(ultimaFecha)) {
+        } else if (fecha2Formato.isAfter(ultimaFecha)){
             System.out.println("No tenemos registro de una fecha tan cercana");
-        } else {
+        }else {
+            System.out.println("Contando");
             while (!tempfecha.equals(fecha2Formato)) {
                 if (arbolBusqueda.find(tempfecha) != null) {
                     MyList<Top50> recorrer = arbolBusqueda.find(tempfecha).Values();
@@ -299,9 +316,10 @@ public class Sistema {
                             Cancion canciontemp = clonTop.delete();
                             Float tempo = canciontemp.getTempo();
                             if (tempo > temp1 && tempo < temp2) {
-                                if (!cancionesYaContadas.contains(canciontemp.getName())) {
-                                    cantcan++;
-                                    cancionesYaContadas.add(canciontemp.getName());
+                                if (!cancionesYaContadas.contains(canciontemp)) {
+                                    try {
+                                        cancionesYaContadas.put(canciontemp,canciontemp);
+                                    }catch (YaExiste e){}
                                 }
 
                             }
@@ -311,10 +329,8 @@ public class Sistema {
                 tempfecha = tempfecha.plus(1, ChronoUnit.DAYS);
             }
             System.out.println("------------------------------------------------------");
-            System.out.println("Hay " + cantcan + " En ese rango de fechas con ese rango de tempo");
+            System.out.println("Hay " + cancionesYaContadas.size() + " En ese rango de fechas con ese rango de tempo");
             System.out.println("------------------------------------------------------");
-            return cantcan;
         }
-        return 0;
     }
 }

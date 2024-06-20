@@ -66,10 +66,11 @@ public class Procesador {
                                Float.parseFloat(datos[23].replaceAll("\"", "")));
 
                        for (int a = 0; a < artistas.length; a++) { // Este for es para agregar los artistas a la cancion
+                           String nombreV = artistas[a].replaceAll("\"", "");
                            String nombre = artistas[a].replaceAll("[\"; ]", "").toLowerCase();
                            c.getArtist().add(nombre);
                            if (!hashArtistas.contains(nombre)) {
-                               Artista tempArtista = new Artista(nombre);
+                               Artista tempArtista = new Artista(nombre,nombreV);
                                try {
                                    hashArtistas.put(nombre, tempArtista);
                                } catch (YaExiste e) {
@@ -131,6 +132,8 @@ public class Procesador {
 
         System.out.println("Memoria usada: " + (memoryUsed / 1024) + " KB");
         System.out.println("Memoria usada: " + (memoryUsed / (1024 * 1024)) + " MB");
+        System.out.println("Hay "+ hashCanciones.size()+ " canciones");
+        System.out.println("Hay "+ hashArtistas.size()+ " artistas");
         return arbolFechas;
    }
 

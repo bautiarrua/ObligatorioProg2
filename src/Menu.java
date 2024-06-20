@@ -30,10 +30,12 @@ public class Menu {
             if (eleccion.equals("4")) {
                 sis.cant_art();
             }
-            if (eleccion.equals("4")) {
+            if (eleccion.equals("5")) {
                 sis.cant_canc_tempo();
             }
-            if (eleccion.equals(0)) {
+            if (eleccion.equals("0")) {
+                System.out.println("------------------------------------------------------");
+                System.out.println("Se terminaron las consultas");
                 devuelta = false;
             }
         }
