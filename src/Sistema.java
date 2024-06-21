@@ -28,24 +28,47 @@ public class Sistema {
 
 
     public void Top_10_canciones() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate localdatepri = LocalDate.parse("18/10/2023", formatter);
+        ChronoLocalDate primeraFecha = localdatepri;
+        LocalDate localdateult = LocalDate.parse("14/05/2024", formatter);
+        ChronoLocalDate ultimaFecha = localdateult;
+        LocalDate localDate = null;
+        String fecha = null;
+        String pais = null;
         System.out.println("------------------------------------------------------");
         Scanner scanner1 = new Scanner(System.in);
         System.out.println("diga el pais del que quiere sber el top");
-        String pais = scanner1.nextLine();
-        Scanner scanner2 = new Scanner(System.in);
-        System.out.println("diga la fecha de la que quiere sber el top");
-        String fecha = scanner2.nextLine();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate localDate = LocalDate.parse(fecha, formatter);
-        ChronoLocalDate fechaFormato = localDate;
-        try {
-            System.out.println("------------------------------------------------------");
-            MyHeap<Cancion, Integer> heapABorrar = arbolBusqueda.find(fechaFormato).get(pais).getTop().clonar();
-            for (int i = 0; i < 10; i++) {
-                System.out.println("TOP " +(i+1)+" "+heapABorrar.delete().getName());
+        pais = scanner1.nextLine().toLowerCase();
+        if(procesador.hashPaises.contains(pais)) {
+            while (localDate == null) {
+                Scanner scanner2 = new Scanner(System.in);
+                System.out.println("diga la fecha de la que quiere sber el top");
+                fecha = scanner2.nextLine();
+                try {
+                    localDate = LocalDate.parse(fecha, formatter);
+                } catch (Exception e) {
+                }
             }
-        } catch (NoEsta e) {
-            System.out.println("No entra");
+            ChronoLocalDate fechaFormato = localDate;
+            if (fechaFormato.isBefore(primeraFecha)) {
+                System.out.println("No tenemos registro de una fecha tan lejana");
+            } else if (fechaFormato.isAfter(ultimaFecha)) {
+                System.out.println("No tenemos registro de una fecha tan cercana");
+            } else {
+                try {
+                    System.out.println("------------------------------------------------------");
+                    MyHeap<Cancion, Integer> heapABorrar = arbolBusqueda.find(fechaFormato).get(pais).getTop().clonar();
+                    for (int i = 0; i < 10; i++) {
+                        System.out.println("TOP " + (i + 1) + " " + heapABorrar.delete().getName());
+                    }
+                } catch (NoEsta e) {
+                    System.out.println("No entra");
+                }
+            }
+        }
+        else{
+            System.out.println("El pais que selecciono no esta registrado");
         }
         System.out.println("------------------------------------------------------");
     }

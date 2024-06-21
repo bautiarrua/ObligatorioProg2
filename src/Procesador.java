@@ -17,11 +17,13 @@ import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Scanner;
 
 
 public class Procesador {
     MyHashCerradoI<String, Artista> hashArtistas = new MyHashCerrado<>();
     MyHashCerrado<String, Cancion> hashCanciones = new MyHashCerrado<>();
+    MyHashCerrado<String, String> hashPaises = new MyHashCerrado<>();
    public Arbolbinario<ChronoLocalDate,MyHashCerrado<String, Top50>> arbol() {
 
        // Obtener la instancia de Runtime
@@ -48,13 +50,12 @@ public class Procesador {
                linea = br.readLine();
                if (linea != null) {
                    // ca++;
-
                    //Obtener los datos
                    String[] datos = linea.split(",\"");
 
                    String ar = datos[2];
                    String[] artistas = ar.split(",");
-                   String pais = datos[6].replaceAll("\"", "");
+                   String pais = datos[6].replaceAll("\"", "").toLowerCase();
 
                    ChronoLocalDate fecha = LocalDate.parse(datos[7].replaceAll("\"", ""));
 
@@ -102,6 +103,11 @@ public class Procesador {
                            try {
                                arbolFechas.find(fecha).get(pais).getTop().insert(c, dailyRank);
                            }catch (Exception e){}
+                       }
+                       if(!hashPaises.contains(pais)){
+                           try {
+                               hashPaises.put(pais,pais);
+                           }catch (YaExiste e){}
                        }
                    }
                }
