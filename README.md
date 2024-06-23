@@ -12,7 +12,7 @@ Utilizamos el buffer reader para poder leer el csv, y separamos los datos por: "
 - Los tops 50 de cada pais en una fecha dada estan cuardados en un heap con daily rank como clave y la cancion como valor. Esto debido a que de esta forma, obtener un top n, solo hay que eliminar el primer elemento del heap n veces e ir guardandolos en una lista.
 - Los artistas tienen un atributo contador, el cual es util para hacer la funcion Top_7_artistas(), ya que cada vez que se hace una aparicion de este artista se le suma 1 al contador. y al final se agrega todos los artistas a un heap ordenado por el contador.
 - La idea detras de hacer un arbol binario con fecha como clave, era que nos quede más facil obtener datos en un rango de fechas dado. Sin embargo, nos dimos cuenta que quizas la mejor opcion era utilizar un hash, pero ya no nos daba el tiempo a cambiarlo.
-- Justificacion O(n)??????
+- Justificacion O(n) en la consulta Top_5_canciones(): Lo que hacemos nosotros es recorrer una sola lista de todos los tops 50 que hay, y a cada top 50 lo recorremos una vez, por lo que la consulta es O(n). Al final de esta consulta hay unos for, pero estos son por fuera de la consulta principal ya que tienen la funcionalidad de agregar los datos a un heap y resetar los contadores a 0.
 
 # Consumo de memoria en cada reporte:
 
