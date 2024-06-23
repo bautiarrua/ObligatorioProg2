@@ -16,7 +16,7 @@ Utilizamos el buffer reader para poder leer el csv, y separamos los datos por: "
 
 # Consumo de memoria en cada reporte:
 
-## carga de datos
+## Carga de datos
 Tiempo : 7,2s
 Memoria: 244mb
 
