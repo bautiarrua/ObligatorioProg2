@@ -1,4 +1,4 @@
-# Deacripcion de los procesos de carga:
+# Descripcion de los procesos de carga:
 
 La estructura general que utilizamos es un arbol binario que tiene como clave la fecha y como valor un hash.
 Este hash tiene como clave un string que representa a los paises, y como valor tiene una clase top50, la cual tiene un atributo que es un heap con daily rank como clave y la cancion como valor
