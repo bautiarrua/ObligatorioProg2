@@ -1,5 +1,7 @@
 # Descripcion de los procesos de carga:
 
+Para iniciar el programa hay que correr el main y en el fileName poner la direccion donde tienen guardado el csv
+
 La estructura general que utilizamos es un arbol binario que tiene como clave la fecha y como valor un hash.
 Este hash tiene como clave un string que representa a los paises, y como valor tiene una clase top50, la cual tiene un atributo que es un heap con daily rank como clave y la cancion como valor
 
