@@ -20,23 +20,23 @@ Utilizamos el buffer reader para poder leer el csv, y separamos los datos por: "
 Tiempo : 7,2s
 Memoria: 244mb
 
-##Top_10_canciones()
+## Top_10_canciones()
 Tiempo : 6ms
 Memoria: 0mb
 
-##Top_5_canciones()
+## Top_5_canciones()
 Tiempo : 42ms
 Memoria: 1mb
 
-##Top_7_artistas()
+## Top_7_artistas()
 Tiempo : 5s
 Memoria: 38mb
 
-##cant_art()
+## cant_art()
 Tiempo : 3ms
 Memoria: 0mb
 
-##cant_canc_tempo()
+## cant_canc_tempo()
 Tiempo : 480ms
 Memoria: 25mb
 
