@@ -38,34 +38,24 @@ public class Procesador {
        Arbolbinario<ChronoLocalDate, MyHashCerrado<String, Top50>> arbolFechas = new Arbolbinario<>();
        Cancion c = null;
        int size = 750000;
-       // int ca = 2;
        int l = 0;
-       //String fileName = "C:\\Users\\franc\\OneDrive - Universidad de Montevideo\\Programación 1\\universal_top_spotify_songs (1).csv";
-       String fileName = "C:\\Users\\jarruabarrena\\OneDrive - Universidad de Montevideo\\Prog2\\Obligatorio\\universal_top_spotify_songs.csv";
+       String fileName = "Archivo.csv";
        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
            String linea = br.readLine();
-//            while ((linea = br.readLine()) != null){
            for (int i = 0; i < size; i++) { // Este for es para decirle cuantas lineas leer
-               //System.out.println(ca);
                linea = br.readLine();
                if (linea != null) {
-                   // ca++;
-                   //Obtener los datos
-                   String[] datos = linea.split(",\"");
-
+                   String[] datos = linea.split("\",\"");
                    String ar = datos[2];
                    String[] artistas = ar.split(",");
                    String pais = datos[6].replaceAll("\"", "").toLowerCase();
-
                    ChronoLocalDate fecha = LocalDate.parse(datos[7].replaceAll("\"", ""));
-
                    int dailyRank = Integer.parseInt(datos[3].replaceAll("\"", ""));
                    String id = datos[0].replaceAll("\"", "");
-                   if(!hashCanciones.contains(id)) {
+                   if(!hashCanciones.contains(id)) {//si la cancion no esta creada, la crea
                        c = new Cancion(id,
                                datos[1].replaceAll("\"", ""),
                                Float.parseFloat(datos[23].replaceAll("\"", "")));
-
                        for (int a = 0; a < artistas.length; a++) { // Este for es para agregar los artistas a la cancion
                            String nombreV = artistas[a].replaceAll("\"", "");
                            String nombre = artistas[a].replaceAll("[\"; ]", "").toLowerCase();
@@ -81,7 +71,7 @@ public class Procesador {
                        try {
                            hashCanciones.put(id, c);
                        }catch (YaExiste e){}
-                   }else{
+                   }else{//si la canion ya esta creada usa esa
                        try {
                            c = hashCanciones.get(datos[0].replaceAll("\"", ""));
                        }catch (NoEsta e){}
@@ -104,7 +94,7 @@ public class Procesador {
                                arbolFechas.find(fecha).get(pais).getTop().insert(c, dailyRank);
                            }catch (Exception e){}
                        }
-                       if(!hashPaises.contains(pais)){
+                       if(!hashPaises.contains(pais)){//verifica si el pais ya esta creado
                            try {
                                hashPaises.put(pais,pais);
                            }catch (YaExiste e){}
@@ -135,7 +125,6 @@ public class Procesador {
 
         System.out.println("El procesador tomó: " + durationInMillis + " milisegundos");
         System.out.println("El procesador tomó: " + durationInSeconds + " segundos");
-
         System.out.println("Memoria usada: " + (memoryUsed / 1024) + " KB");
         System.out.println("Memoria usada: " + (memoryUsed / (1024 * 1024)) + " MB");
         System.out.println("Hay "+ hashCanciones.size()+ " canciones");

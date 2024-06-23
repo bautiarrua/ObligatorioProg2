@@ -9,7 +9,7 @@ import java.time.chrono.ChronoLocalDate;
 public class Top50 {
     String pais;
     ChronoLocalDate fecha;
-    MyHeap<Cancion,Integer> top; //No tendria q ser daily rank en vez de cancion?
+    MyHeap<Cancion,Integer> top;
 
     public Top50(String pais, ChronoLocalDate fecha) {
         this.pais = pais;

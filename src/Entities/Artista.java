@@ -5,9 +5,8 @@ import java.util.List;
 public class Artista implements Comparable<Artista> {
 
     private String nombre;
-    //List<Cancion> canciones;
     private  String nombreV;
-    private Integer Contdor; //Pa contar las veces q aparece en el top 50
+    private Integer Contdor; //Para contar las veces q aparece en el top 50
 
     public Artista(String nombre, String nombreV) {
         this.nombre = nombre;
@@ -39,6 +38,7 @@ public class Artista implements Comparable<Artista> {
         this.nombreV = nombreV;
     }
 
+    //El compareTo lo hicimos para que el heap se ordene con el que tiene mayor numero de apariciones primero y asi sucesivamente
     public int compareTo(Artista a) {
         if (this.Contdor < a.getContdor()) {
             return 1;

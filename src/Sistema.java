@@ -28,22 +28,22 @@ public class Sistema {
 
 
     public void Top_10_canciones() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate localdatepri = LocalDate.parse("18/10/2023", formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localdatepri = LocalDate.parse("2023-10-18", formatter);
         ChronoLocalDate primeraFecha = localdatepri;
-        LocalDate localdateult = LocalDate.parse("14/05/2024", formatter);
+        LocalDate localdateult = LocalDate.parse("2024-05-13", formatter);
         ChronoLocalDate ultimaFecha = localdateult;
         LocalDate localDate = null;
         String fecha = null;
         String pais = null;
         System.out.println("------------------------------------------------------");
         Scanner scanner1 = new Scanner(System.in);
-        System.out.println("diga el pais del que quiere sber el top");
+        System.out.println("diga el pais del que quiere saber el top");
         pais = scanner1.nextLine().toLowerCase();
         if(procesador.hashPaises.contains(pais)) {
             while (localDate == null) {
                 Scanner scanner2 = new Scanner(System.in);
-                System.out.println("diga la fecha de la que quiere sber el top");
+                System.out.println("diga la fecha de la que quiere saber el top");
                 fecha = scanner2.nextLine();
                 try {
                     localDate = LocalDate.parse(fecha, formatter);
@@ -71,18 +71,87 @@ public class Sistema {
             System.out.println("El pais que selecciono no esta registrado");
         }
         System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+    }
+
+    public void Top_5_canciones() {
+        System.out.println("------------------------------------------------------");
+        LocalDate localDate = null;
+        Cancion canciontemp = null;
+        MyList<Cancion> cancionesQueEstan = new MyLinkedListImpl<>();
+        MyHeap<Cancion, Cancion> topCancion = new MyHeapIMPL<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        while (localDate == null) {
+            Scanner scanner1 = new Scanner(System.in);
+            System.out.println("Seleccione la fehca con el formato yyyy-MM-dd");
+            String fecha1 = scanner1.nextLine();
+            try {
+                localDate = LocalDate.parse(fecha1, formatter);
+            } catch (Exception e) {
+                System.out.println("La fecha no es compatible con el formato");
+            }
+        }
+        ChronoLocalDate fechaFormato = localDate;
+        LocalDate localdatepri = LocalDate.parse("2023-10-18", formatter);
+        ChronoLocalDate primeraFecha = localdatepri;
+        LocalDate localdateult = LocalDate.parse("2024-05-13", formatter);
+        ChronoLocalDate ultimaFecha = localdateult;
+        if (fechaFormato.isBefore(primeraFecha)) {
+            System.out.println("No tenemos registro de una fecha tan lejana");
+        }
+        else if (fechaFormato.isAfter(ultimaFecha)) {
+            System.out.println("No tenemos registro de una fecha tan cercana");
+        }else {
+            MyList<Top50> recorrer = arbolBusqueda.find(fechaFormato).Values();
+            for (int i = 0; i < arbolBusqueda.find(fechaFormato).Keys().size(); i++) {
+                Top50 tempTop = recorrer.get(i);
+                MyHeap<Cancion, Integer> clonTop = tempTop.getTop().clonar();
+                int tam = clonTop.size();
+                for (int j = 0; j < tam; j++) {
+                    String id = clonTop.delete().getSpotifyId();
+                    try {
+                        canciontemp = procesador.hashCanciones.get(id);
+                    } catch (NoEsta e) {
+                    }
+                    int contAnt = canciontemp.getContador();
+                    canciontemp.setContador(contAnt + 1);
+                    if (!cancionesQueEstan.contains(canciontemp)) {
+                        cancionesQueEstan.add(canciontemp);
+                    }
+                }
+            }
+            for (int i = 0; i < cancionesQueEstan.size(); i++) {
+                topCancion.insert(cancionesQueEstan.get(i), cancionesQueEstan.get(i));
+            }
+            System.out.println("------------------------------------------------------");
+            for (int i = 0; i < 5; i++) {
+                Cancion tempcancion = topCancion.delete();
+                System.out.println("Top " + (i + 1) + " " + tempcancion.getName() + " con " + tempcancion.getContador() + " veces");
+            }
+            System.out.println("------------------------------------------------------");
+            for (int i = 0; i < cancionesQueEstan.size(); i++) {
+                cancionesQueEstan.get(i).setContador(0);
+            }
+        }
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
     }
 
     public void Top_7_artistas() {
+        System.out.println("------------------------------------------------------");
         MyList<Artista> artistaFechas = new MyLinkedListImpl<>();
         MyHeap<Artista, Artista> heapArtistas = new MyHeapIMPL<>();
         int cantcan = 0;
         LocalDate localDate = null;
         LocalDate localDate2 = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localdatepri = LocalDate.parse("2023-10-18", formatter);
+        ChronoLocalDate primeraFecha = localdatepri;
+        LocalDate localdateult = LocalDate.parse("2024-05-13", formatter);
+        ChronoLocalDate ultimaFecha = localdateult;
         while (localDate == null) {
             Scanner scanner1 = new Scanner(System.in);
-            System.out.println("Seleccione la fehca de inicio con el formato dd/mm/yyyy");
+            System.out.println("Seleccione la fehca de inicio con el formato yyyy-MM-dd");
             String fecha1 = scanner1.nextLine();
             try {
                 localDate = LocalDate.parse(fecha1, formatter);
@@ -94,7 +163,7 @@ public class Sistema {
         ChronoLocalDate fecha1Formato = localDate;
         while (localDate2 == null) {
             Scanner scanner2 = new Scanner(System.in);
-            System.out.println("Seleccione la fehca de fin con el formato dd/mm/yyyy");
+            System.out.println("Seleccione la fehca de fin con el formato yyyy-MM-dd");
             String fecha2 = scanner2.nextLine();
             try {
                 localDate2 = LocalDate.parse(fecha2, formatter);
@@ -104,10 +173,6 @@ public class Sistema {
         }
         ChronoLocalDate fecha2Formato = localDate2;
         ChronoLocalDate tempfecha = fecha1Formato;
-        LocalDate localdatepri = LocalDate.parse("18/10/2023", formatter);
-        ChronoLocalDate primeraFecha = localdatepri;
-        LocalDate localdateult = LocalDate.parse("14/05/2024", formatter);
-        ChronoLocalDate ultimaFecha = localdateult;
         if (fecha1Formato.isAfter(fecha2Formato)) {
             System.out.println("No tiene sentido el orden");
         }
@@ -117,6 +182,7 @@ public class Sistema {
         else if (fecha2Formato.isAfter(ultimaFecha)) {
             System.out.println("No tenemos registro de una fecha tan cercana");
         } else {
+            System.out.println("Contando");
             while (!tempfecha.equals(fecha2Formato)) {
                 if (arbolBusqueda.find(tempfecha) != null) {
                     MyList<Top50> recorrer = arbolBusqueda.find(tempfecha).Values();
@@ -161,64 +227,8 @@ public class Sistema {
             }
             System.out.println("------------------------------------------------------");
         }
-    }
-
-    public void Top_5_canciones() {
-        LocalDate localDate = null;
-        Cancion canciontemp = null;
-        MyList<Cancion> cancionesQueEstan = new MyLinkedListImpl<>();
-        MyHeap<Cancion, Cancion> topCancion = new MyHeapIMPL<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        while (localDate == null) {
-            Scanner scanner1 = new Scanner(System.in);
-            System.out.println("Seleccione la fehca con el formato dd/mm/yyyy");
-            String fecha1 = scanner1.nextLine();
-            try {
-                localDate = LocalDate.parse(fecha1, formatter);
-            } catch (Exception e) {
-                System.out.println("La fecha no es compatible con el formato");
-            }
-        }
-        ChronoLocalDate fechaFormato = localDate;
-        LocalDate localdatepri = LocalDate.parse("18/10/2023", formatter);
-        ChronoLocalDate primeraFecha = localdatepri;
-        LocalDate localdateult = LocalDate.parse("14/05/2024", formatter);
-        ChronoLocalDate ultimaFecha = localdateult;
-        if (fechaFormato.isBefore(primeraFecha)) {
-            System.out.println("No tenemos registro de una fecha tan lejana");
-        }
-        else if (fechaFormato.isAfter(ultimaFecha)) {
-            System.out.println("No tenemos registro de una fecha tan cercana");
-        }else {
-            MyList<Top50> recorrer = arbolBusqueda.find(fechaFormato).Values();
-            for (int i = 0; i < arbolBusqueda.find(fechaFormato).Keys().size(); i++) {
-                Top50 tempTop = recorrer.get(i);
-                MyHeap<Cancion, Integer> clonTop = tempTop.getTop().clonar();
-                int tam = clonTop.size();
-                for (int j = 0; j < tam; j++) {
-                    String id = clonTop.delete().getSpotifyId();
-                    try {
-                        canciontemp = procesador.hashCanciones.get(id);
-                    } catch (NoEsta e) {
-                    }
-                    int contAnt = canciontemp.getContador();
-                    canciontemp.setContador(contAnt + 1);
-                    if (!cancionesQueEstan.contains(canciontemp)) {
-                        cancionesQueEstan.add(canciontemp);
-                    }
-                }
-            }
-            for (int i = 0; i < cancionesQueEstan.size(); i++) {
-                topCancion.insert(cancionesQueEstan.get(i), cancionesQueEstan.get(i));
-            }
-            for (int i = 0; i < 5; i++) {
-                Cancion tempcancion = topCancion.delete();
-                System.out.println("Top " + (i + 1) + " " + tempcancion.getName() + " con " + tempcancion.getContador() + " veces");
-            }
-            for (int i = 0; i < cancionesQueEstan.size(); i++) {
-                cancionesQueEstan.get(i).setContador(0);
-            }
-        }
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
     }
 
     public void cant_art() {
@@ -230,10 +240,10 @@ public class Sistema {
         if (procesador.hash().contains(nombreA.toLowerCase())) {
             try {
                 Artista tempA = procesador.hash().get(nombreA.toLowerCase());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 while (localDate == null) {
                     Scanner scanner1 = new Scanner(System.in);
-                    System.out.println("Seleccione la fehca con el formato dd/mm/yyyy");
+                    System.out.println("Seleccione la fehca con el formato dd-mm-yyyy");
                     String fecha1 = scanner1.nextLine();
                     try {
                         localDate = LocalDate.parse(fecha1, formatter);
@@ -242,9 +252,9 @@ public class Sistema {
                     }
                 }
                 ChronoLocalDate fecha1Formato = localDate;
-                LocalDate localdatepri = LocalDate.parse("18/10/2023", formatter);
+                LocalDate localdatepri = LocalDate.parse("2023-10-18", formatter);
                 ChronoLocalDate primeraFecha = localdatepri;
-                LocalDate localdateult = LocalDate.parse("14/05/2024", formatter);
+                LocalDate localdateult = LocalDate.parse("2024-05-13", formatter);
                 ChronoLocalDate ultimaFecha = localdateult;
                 if (fecha1Formato.isBefore(primeraFecha)) {
                     System.out.println("No tenemos registro de una fecha tan lejana");
@@ -266,7 +276,9 @@ public class Sistema {
                             }
                         }
                     }
+                    System.out.println("------------------------------------------------------");
                     System.out.println("El artista aparece " + tempA.getContdor() + " veces");
+                    System.out.println("------------------------------------------------------");
                 }
                 tempA.setContdor(0);
             } catch (NoEsta e) {
@@ -283,10 +295,10 @@ public class Sistema {
         MyHashCerradoI<Cancion,Cancion> cancionesYaContadas = new MyHashCerrado<>();
         LocalDate localDate = null;
         LocalDate localDate2 = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         while (localDate == null) {
             Scanner scanner1 = new Scanner(System.in);
-            System.out.println("Seleccione la fehca de inicio con el formato dd/mm/yyyy");
+            System.out.println("Seleccione la fehca de inicio con el formato dd-mm-yyyy");
             String fecha1 = scanner1.nextLine();
             try {
                 localDate = LocalDate.parse(fecha1, formatter);
@@ -297,7 +309,7 @@ public class Sistema {
         ChronoLocalDate fecha1Formato = localDate;
         while (localDate2 == null) {
             Scanner scanner2 = new Scanner(System.in);
-            System.out.println("Seleccione la fehca de fin con el formato dd/mm/yyyy");
+            System.out.println("Seleccione la fehca de fin con el formato dd-mm-yyyy");
             String fecha2 = scanner2.nextLine();
             try {
                 localDate2 = LocalDate.parse(fecha2, formatter);
@@ -315,9 +327,9 @@ public class Sistema {
         System.out.println("Seleccione el mayor del rengo del tempo");
         String tempS2 = scanner4.nextLine();
         Float temp2 = Float.parseFloat(tempS2);
-        LocalDate localdatepri = LocalDate.parse("18/10/2023", formatter);
+        LocalDate localdatepri = LocalDate.parse("2023-10-18", formatter);
         ChronoLocalDate primeraFecha = localdatepri;
-        LocalDate localdateult = LocalDate.parse("14/05/2024", formatter);
+        LocalDate localdateult = LocalDate.parse("2024-05-13", formatter);
         ChronoLocalDate ultimaFecha = localdateult;
         if (fecha1Formato.isAfter(fecha2Formato)) {
             System.out.println("No tiene sentido el orden");
@@ -355,5 +367,7 @@ public class Sistema {
             System.out.println("Hay " + cancionesYaContadas.size() + " En ese rango de fechas con ese rango de tempo");
             System.out.println("------------------------------------------------------");
         }
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
     }
 }

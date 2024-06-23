@@ -1,5 +1,8 @@
 package Entities;
 
+import adt.linkedlist.MyLinkedListImpl;
+import adt.linkedlist.MyList;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,42 +11,19 @@ public class Cancion implements Comparable<Cancion> {
 
     private String spotifyId;//0
     private String name;//1
-    private List<String> artist;//2 No hay q usar nustra lsita??
+    private MyList<String> artist;//2
     private Float tempo;//23
     int contador;
-
-//    int dailyRank;//3
-//    int dailyMovements;//4
-//    int weeklyMovements;//5
-//    String country;//6
-//    LocalDate snapShot;//7
-//    int popularity;//8
-//    boolean isExplicit;//9
-//    int durationMs;//10
-//    String albumName;//11
-//    String albumRelease 12
-//    Float danceability;//13
-//    Float energy;//1
-//    Int key 15
-//    Float loudness;//16
-//    Int mode 17
-//    Float speechiness;//18
-//    Float acousticness;//19
-//    Float instrumentalness;//20
-//    Float liveness;//21
-//    Float valence;//22
-//    int timeSignature;//24
-
 
     public Cancion(String spotifyId, String name,Float tempo) {
         this.spotifyId = spotifyId;
         this.name = name;
         this.tempo = tempo;
-        this.artist = new ArrayList<>();
+        this.artist = new MyLinkedListImpl<>();
         this.contador = 0;
     }
 
-
+    //Dos canciones son iguales si su id es el mismo
     public boolean equals(Object obj) {
         Cancion tempP = (Cancion) obj;
         if (this.getSpotifyId() == (tempP.getSpotifyId())) {
@@ -69,13 +49,10 @@ public class Cancion implements Comparable<Cancion> {
         this.name = name;
     }
 
-    public List getArtist() {
+    public MyList getArtist() {
         return artist;
     }
 
-//    public void setArtist(String artist) {
-//        this.artist = artist;
-//    }
     public Float getTempo() {
         return tempo;
     }
@@ -91,6 +68,8 @@ public class Cancion implements Comparable<Cancion> {
     public void setContador(int contador) {
         this.contador = contador;
     }
+
+    //El compareTo lo hicimos para que el heap se ordene con el que tiene mayor numero de apariciones primero y asi sucesivamente
     public int compareTo(Cancion a) {
         if (this.contador < a.getContador()) {
             return 1;
